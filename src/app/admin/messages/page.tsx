@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ContactMessage } from "@/types";
-import { Trash2, Loader, Mail } from "lucide-react";
+import { Trash2, Mail, MailOpen, ChevronDown, ChevronUp } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function AdminMessages() {
@@ -67,9 +65,11 @@ export default function AdminMessages() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader className="animate-spin mr-2" />
-        <span>Loading messages...</span>
+      <div className="space-y-4">
+        <div className="h-8 w-48 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="h-20 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        ))}
       </div>
     );
   }
@@ -77,112 +77,99 @@ export default function AdminMessages() {
   const unreadCount = messages.filter((m) => !m.read).length;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-8"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Contact Messages</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          {unreadCount > 0 ? (
-            <>
-              You have{" "}
-              <span className="font-bold text-blue-600">{unreadCount}</span>{" "}
-              unread message{unreadCount !== 1 ? "s" : ""}
-            </>
-          ) : (
-            "No unread messages"
-          )}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Messages</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            {unreadCount > 0
+              ? <><span className="text-blue-600 dark:text-blue-400 font-semibold">{unreadCount} unread</span> · {messages.length} total</>
+              : `${messages.length} message${messages.length !== 1 ? "s" : ""}`
+            }
+          </p>
+        </div>
       </div>
 
-      {/* Messages List */}
+      {/* Messages */}
       {messages.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <Mail className="mx-auto mb-4 text-gray-400" size={48} />
-            <p className="text-gray-600 dark:text-gray-400">No messages yet.</p>
-          </CardContent>
-        </Card>
+        <div className="text-center py-20 text-gray-400 dark:text-gray-500">
+          <Mail size={40} className="mx-auto mb-3 opacity-30" />
+          <p className="text-sm">No messages yet.</p>
+        </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="space-y-2">
           {messages.map((message) => (
             <motion.div
               key={message.id}
+              layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              className={`rounded-xl border bg-white dark:bg-gray-800/50 overflow-hidden transition-all ${
+                !message.read
+                  ? "border-blue-300 dark:border-blue-700"
+                  : "border-gray-200 dark:border-gray-700"
+              }`}
             >
-              <Card className={!message.read ? "border-blue-500 border-2" : ""}>
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-bold">{message.name}</h3>
-                        {!message.read && (
-                          <span className="px-2 py-1 rounded-full text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
-                            Unread
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">
-                        <a
-                          href={`mailto:${message.email}`}
-                          className="hover:text-blue-600"
-                        >
-                          {message.email}
-                        </a>
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">
-                        {new Date(message.created_at).toLocaleString()}
-                      </p>
-
-                      {expandedId === message.id && (
-                        <div className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg mb-4 border border-gray-200 dark:border-gray-800">
-                          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                            {message.message}
-                          </p>
-                        </div>
-                      )}
-
-                      {expandedId !== message.id && (
-                        <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
-                          {message.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-2 ml-4">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() =>
-                          setExpandedId(
-                            expandedId === message.id ? null : message.id,
-                          )
-                        }
-                      >
-                        {expandedId === message.id ? "Show less" : "View"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={message.read ? "outline" : "default"}
-                        onClick={() => handleMarkRead(message.id, message.read)}
-                      >
-                        {message.read ? "Mark unread" : "Mark read"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDelete(message.id)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
+              {/* Header row */}
+              <div
+                className="flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
+                onClick={() => setExpandedId(expandedId === message.id ? null : message.id)}
+              >
+                <div className={`p-2 rounded-lg flex-shrink-0 ${!message.read ? "bg-blue-50 dark:bg-blue-950/40" : "bg-gray-100 dark:bg-gray-700"}`}>
+                  {message.read
+                    ? <MailOpen size={14} className="text-gray-400" />
+                    : <Mail size={14} className="text-blue-600 dark:text-blue-400" />
+                  }
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-sm font-semibold ${!message.read ? "" : "text-gray-700 dark:text-gray-300"}`}>
+                      {message.name}
+                    </span>
+                    {!message.read && (
+                      <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    )}
                   </div>
-                </CardContent>
-              </Card>
+                  <p className="text-[11px] text-gray-400 truncate">{message.email} · {new Date(message.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleMarkRead(message.id, message.read); }}
+                    className={`p-1.5 rounded-lg text-[11px] font-medium transition-colors ${message.read ? "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400" : "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40"}`}
+                    title={message.read ? "Mark unread" : "Mark read"}
+                  >
+                    {message.read ? <Mail size={13} /> : <MailOpen size={13} />}
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDelete(message.id); }}
+                    className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 text-gray-400 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                  {expandedId === message.id
+                    ? <ChevronUp size={14} className="text-gray-400 ml-1" />
+                    : <ChevronDown size={14} className="text-gray-400 ml-1" />
+                  }
+                </div>
+              </div>
+              {/* Expanded body */}
+              {expandedId === message.id && (
+                <div className="px-4 pb-4">
+                  <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700/50">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">{message.message}</p>
+                  </div>
+                  <div className="mt-2 flex items-center gap-3">
+                    <a
+                      href={`mailto:${message.email}`}
+                      className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      Reply to {message.email} →
+                    </a>
+                  </div>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

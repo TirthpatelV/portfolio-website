@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader, Save, Upload, X, Plus, Trash2 } from "lucide-react";
+import { Loader, Save, Upload, X, Plus, Trash2, UserCircle, BookOpen, Briefcase, Link2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface EducationEntry {
@@ -126,188 +124,177 @@ export default function AdminAbout() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader className="animate-spin mr-2" />
-        <span>Loading...</span>
+      <div className="space-y-4">
+        <div className="h-8 w-48 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        <div className="h-64 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        <div className="h-40 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
       </div>
     );
   }
 
+  const inputClass = "w-full px-3 py-2 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white/30 transition";
+  const labelClass = "block text-xs font-bold text-gray-400 dark:text-gray-500 mb-1 uppercase tracking-wider";
+  const sectionClass = "rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 p-5 shadow-sm";
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Edit About Section</h1>
-        <p className="text-gray-600 dark:text-gray-400">Update your professional profile and background</p>
+        <h1 className="text-2xl font-bold tracking-tight">About Section</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Update your professional profile and background</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid gap-8">
+      <form onSubmit={handleSubmit} className="space-y-4">
 
         {/* Profile Photo */}
-        <Card className="border-2 border-dashed border-blue-200 dark:border-blue-800">
-          <CardHeader><CardTitle>Profile Photo</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
-            {profilePhotoPreview ? (
-              <div className="relative w-full max-w-sm mx-auto">
-                <img src={profilePhotoPreview} alt="Preview" className="w-full h-80 object-cover rounded-lg" />
-                <button type="button" onClick={() => { setProfilePhoto(""); setProfilePhotoPreview(""); }}
-                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600">
-                  <X size={20} />
-                </button>
-              </div>
-            ) : (
-              <label className="flex flex-col items-center justify-center w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                <Upload size={32} className="text-blue-600 mb-2" />
-                <span className="font-semibold">Click to upload profile photo</span>
-                <span className="text-sm text-gray-500">PNG, JPG up to 10MB</span>
-                <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
-              </label>
-            )}
-            {isUploading && <div className="flex items-center gap-2 text-blue-600"><Loader size={16} className="animate-spin" /><span>Uploading...</span></div>}
-          </CardContent>
-        </Card>
+        <div className={sectionClass}>
+          <div className="flex items-center gap-2 mb-4">
+            <UserCircle size={15} className="text-gray-400" />
+            <h2 className="text-sm font-semibold">Profile Photo</h2>
+          </div>
+          {profilePhotoPreview ? (
+            <div className="relative w-32 h-32">
+              <img src={profilePhotoPreview} alt="Preview" className="w-32 h-32 object-cover rounded-xl border border-gray-200 dark:border-gray-700" />
+              <button
+                type="button"
+                onClick={() => { setProfilePhoto(""); setProfilePhotoPreview(""); }}
+                className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 shadow"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center w-full max-w-sm p-6 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+              <Upload size={24} className="text-gray-400 mb-2" />
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Click to upload photo</span>
+              <span className="text-xs text-gray-400 mt-0.5">PNG, JPG up to 10MB</span>
+              <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
+            </label>
+          )}
+          {isUploading && (
+            <div className="flex items-center gap-2 text-sm text-blue-600 mt-2">
+              <Loader size={14} className="animate-spin" /><span>Uploading…</span>
+            </div>
+          )}
+        </div>
 
         {/* About Text */}
-        <Card>
-          <CardHeader><CardTitle>About You</CardTitle></CardHeader>
-          <CardContent>
-            <textarea
-              value={aboutText}
-              onChange={(e) => setAboutText(e.target.value)}
-              rows={5}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write a short summary about yourself, your passion, and your journey..."
-            />
-          </CardContent>
-        </Card>
+        <div className={sectionClass}>
+          <div className="flex items-center gap-2 mb-4">
+            <UserCircle size={15} className="text-gray-400" />
+            <h2 className="text-sm font-semibold">About You</h2>
+          </div>
+          <textarea
+            value={aboutText}
+            onChange={(e) => setAboutText(e.target.value)}
+            rows={5}
+            placeholder="Write a short summary about yourself, your passion, and your journey..."
+            className={`${inputClass} resize-none`}
+          />
+        </div>
 
         {/* Education */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Education</CardTitle>
-              <button type="button" onClick={() => setEducation([...education, emptyEdu()])}
-                className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700">
-                <Plus size={16} /> Add Entry
-              </button>
+        <div className={sectionClass}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <BookOpen size={15} className="text-gray-400" />
+              <h2 className="text-sm font-semibold">Education</h2>
             </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
+            <button
+              type="button"
+              onClick={() => setEducation([...education, emptyEdu()])}
+              className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            >
+              <Plus size={13} /> Add Entry
+            </button>
+          </div>
+          <div className="space-y-3">
             {education.map((edu, i) => (
-              <div key={i} className="relative grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900">
+              <div key={i} className="relative grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Degree / Course</label>
-                  <input
-                    type="text"
-                    value={edu.degree}
-                    onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, degree: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. B.Tech Computer Science"
-                  />
+                  <label className={labelClass}>Degree / Course</label>
+                  <input type="text" value={edu.degree} onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, degree: e.target.value } : item))} className={inputClass} placeholder="e.g. B.Tech Computer Science" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">School / University</label>
-                  <input
-                    type="text"
-                    value={edu.school}
-                    onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, school: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. Gujarat University"
-                  />
+                  <label className={labelClass}>School / University</label>
+                  <input type="text" value={edu.school} onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, school: e.target.value } : item))} className={inputClass} placeholder="e.g. Gujarat University" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Year</label>
-                  <input
-                    type="text"
-                    value={edu.year}
-                    onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, year: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. 2020 – 2024"
-                  />
+                  <label className={labelClass}>Year</label>
+                  <input type="text" value={edu.year} onChange={e => setEducation(education.map((item, idx) => idx === i ? { ...item, year: e.target.value } : item))} className={inputClass} placeholder="e.g. 2020 – 2024" />
                 </div>
                 {education.length > 1 && (
-                  <button type="button" onClick={() => setEducation(education.filter((_, idx) => idx !== i))}
-                    className="absolute top-3 right-3 p-1 text-red-400 hover:text-red-600">
-                    <Trash2 size={15} />
+                  <button type="button" onClick={() => setEducation(education.filter((_, idx) => idx !== i))} className="absolute top-3 right-3 p-1 text-gray-300 hover:text-red-500 transition-colors">
+                    <Trash2 size={14} />
                   </button>
                 )}
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Experience */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Work Experience</CardTitle>
-              <button type="button" onClick={() => setExperience([...experience, emptyExp()])}
-                className="flex items-center gap-1 text-sm font-semibold text-purple-600 hover:text-purple-700">
-                <Plus size={16} /> Add Entry
-              </button>
+        <div className={sectionClass}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Briefcase size={15} className="text-gray-400" />
+              <h2 className="text-sm font-semibold">Work Experience</h2>
             </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
+            <button
+              type="button"
+              onClick={() => setExperience([...experience, emptyExp()])}
+              className="flex items-center gap-1 text-xs font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+            >
+              <Plus size={13} /> Add Entry
+            </button>
+          </div>
+          <div className="space-y-3">
             {experience.map((exp, i) => (
-              <div key={i} className="relative grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900">
+              <div key={i} className="relative grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Job Title</label>
-                  <input
-                    type="text"
-                    value={exp.title}
-                    onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, title: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="e.g. Full Stack Developer"
-                  />
+                  <label className={labelClass}>Job Title</label>
+                  <input type="text" value={exp.title} onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, title: e.target.value } : item))} className={inputClass} placeholder="e.g. Full Stack Developer" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Company</label>
-                  <input
-                    type="text"
-                    value={exp.company}
-                    onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, company: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="e.g. TechCorp India"
-                  />
+                  <label className={labelClass}>Company</label>
+                  <input type="text" value={exp.company} onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, company: e.target.value } : item))} className={inputClass} placeholder="e.g. TechCorp India" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Year</label>
-                  <input
-                    type="text"
-                    value={exp.year}
-                    onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, year: e.target.value } : item))}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="e.g. 2022 – Present"
-                  />
+                  <label className={labelClass}>Year</label>
+                  <input type="text" value={exp.year} onChange={e => setExperience(experience.map((item, idx) => idx === i ? { ...item, year: e.target.value } : item))} className={inputClass} placeholder="e.g. 2022 – Present" />
                 </div>
                 {experience.length > 1 && (
-                  <button type="button" onClick={() => setExperience(experience.filter((_, idx) => idx !== i))}
-                    className="absolute top-3 right-3 p-1 text-red-400 hover:text-red-600">
-                    <Trash2 size={15} />
+                  <button type="button" onClick={() => setExperience(experience.filter((_, idx) => idx !== i))} className="absolute top-3 right-3 p-1 text-gray-300 hover:text-red-500 transition-colors">
+                    <Trash2 size={14} />
                   </button>
                 )}
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Resume */}
-        <Card>
-          <CardHeader><CardTitle>Resume Link</CardTitle></CardHeader>
-          <CardContent>
-            <input
-              type="url"
-              value={resumeLink}
-              onChange={(e) => setResumeLink(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="https://example.com/resume.pdf"
-            />
-          </CardContent>
-        </Card>
+        <div className={sectionClass}>
+          <div className="flex items-center gap-2 mb-4">
+            <Link2 size={15} className="text-gray-400" />
+            <h2 className="text-sm font-semibold">Resume Link</h2>
+          </div>
+          <input
+            type="url"
+            value={resumeLink}
+            onChange={(e) => setResumeLink(e.target.value)}
+            placeholder="https://example.com/resume.pdf"
+            className={inputClass}
+          />
+        </div>
 
-        <Button type="submit" disabled={isSaving} className="w-full h-12 text-base font-semibold">
-          <Save size={18} className="mr-2" />
-          {isSaving ? "Saving..." : "Save About Section"}
-        </Button>
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-100 disabled:opacity-50 transition-colors"
+        >
+          <Save size={15} />
+          {isSaving ? "Saving…" : "Save About Section"}
+        </button>
       </form>
     </motion.div>
   );

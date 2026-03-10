@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Profile } from "@/types";
-import { Loader, Save } from "lucide-react";
+import { Save, User, Link2, Info } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function AdminProfile() {
@@ -83,144 +81,91 @@ export default function AdminProfile() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader className="animate-spin mr-2" />
-        <span>Loading profile...</span>
+      <div className="space-y-4">
+        <div className="h-8 w-48 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        <div className="h-64 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
       </div>
     );
   }
 
+  const inputClass = "w-full px-3 py-2 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white/30 transition";
+  const labelClass = "block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5";
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-8"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Edit Profile</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Update your home page profile information
-        </p>
-        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-lg">
-          <p className="text-sm text-blue-900 dark:text-blue-100">
-            📸 <strong>Profile Photo:</strong> Manage your profile photo in the{" "}
-            <strong>About Page</strong> admin section. The same image will
-            appear on both your homepage and about page.
-          </p>
-        </div>
+        <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Update your homepage profile information</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid gap-8">
+      {/* Info banner */}
+      <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50">
+        <Info size={15} className="text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-blue-800 dark:text-blue-200">
+          <strong>Profile photo</strong> is managed in the <strong>About</strong> section — it appears on both the homepage and about page.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+
         {/* Basic Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <User size={15} className="text-gray-400" />
+            <h2 className="text-sm font-semibold">Basic Information</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold mb-2">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="Your name"
-              />
+              <label className={labelClass}>Name</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Your name" className={inputClass} />
             </div>
-
             <div>
-              <label className="block font-semibold mb-2">Title / Role</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="e.g., Full Stack Developer"
-              />
+              <label className={labelClass}>Title / Role</label>
+              <input type="text" name="title" value={formData.title} onChange={handleChange} required placeholder="e.g. Full Stack Developer" className={inputClass} />
             </div>
-
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Bio / Description</label>
+              <textarea name="bio" value={formData.bio} onChange={handleChange} rows={3} placeholder="Tell visitors about yourself" className={`${inputClass} resize-none`} />
+            </div>
             <div>
-              <label className="block font-semibold mb-2">
-                Bio / Description
-              </label>
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                rows={4}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="Tell visitors about yourself"
-              />
+              <label className={labelClass}>Email</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" className={inputClass} />
             </div>
-
-            <div>
-              <label className="block font-semibold mb-2">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="your@email.com"
-              />
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Social Links */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Social Links</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <Link2 size={15} className="text-gray-400" />
+            <h2 className="text-sm font-semibold">Social Links</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold mb-2">GitHub URL</label>
-              <input
-                type="url"
-                name="github"
-                value={formData.github}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="https://github.com/yourname"
-              />
+              <label className={labelClass}>GitHub</label>
+              <input type="url" name="github" value={formData.github} onChange={handleChange} placeholder="https://github.com/yourname" className={inputClass} />
             </div>
-
             <div>
-              <label className="block font-semibold mb-2">LinkedIn URL</label>
-              <input
-                type="url"
-                name="linkedin"
-                value={formData.linkedin}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="https://linkedin.com/in/yourname"
-              />
+              <label className={labelClass}>LinkedIn</label>
+              <input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://linkedin.com/in/yourname" className={inputClass} />
             </div>
-
             <div>
-              <label className="block font-semibold mb-2">Twitter URL</label>
-              <input
-                type="url"
-                name="twitter"
-                value={formData.twitter}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                placeholder="https://twitter.com/yourname"
-              />
+              <label className={labelClass}>Twitter / X</label>
+              <input type="url" name="twitter" value={formData.twitter} onChange={handleChange} placeholder="https://twitter.com/yourname" className={inputClass} />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Submit */}
-        <Button type="submit" disabled={isSaving} className="w-full">
-          <Save size={16} className="mr-2" />
-          {isSaving ? "Saving..." : "Save Profile"}
-        </Button>
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-100 disabled:opacity-50 transition-colors"
+        >
+          <Save size={15} />
+          {isSaving ? "Saving…" : "Save Profile"}
+        </button>
       </form>
     </motion.div>
   );

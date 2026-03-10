@@ -10,17 +10,13 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from("projects")
-      .select("id, title, created_at")
+      .select("*")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
 
     const response = NextResponse.json(data || [], { status: 200 });
-    // Cache for 5 minutes on client, 1 hour on CDN
-    response.headers.set(
-      "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400",
-    );
+    response.headers.set("Cache-Control", "no-store");
     return response;
   } catch (error) {
     console.error("Error fetching projects:", error);

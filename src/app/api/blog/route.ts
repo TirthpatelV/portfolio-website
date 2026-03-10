@@ -20,17 +20,12 @@ export async function GET(request: NextRequest) {
       query = query.eq("published", true);
     }
 
-    const { data, error } = await query.select(
-      "id, title, published_at, published",
-    );
+    const { data, error } = await query;
 
     if (error) throw error;
 
     const response = NextResponse.json(data || [], { status: 200 });
-    response.headers.set(
-      "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400",
-    );
+    response.headers.set("Cache-Control", "no-store");
     return response;
   } catch (error) {
     console.error("Error fetching blog posts:", error);
