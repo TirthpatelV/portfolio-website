@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Github, ArrowUpRight, Loader, Search, Command, Sparkles } from "lucide-react";
+import {
+  Github,
+  ArrowUpRight,
+  Loader,
+  Search,
+  Command,
+  Sparkles,
+} from "lucide-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Project } from "@/types";
 import { supabase } from "@/lib/supabase";
@@ -19,10 +26,10 @@ const containerVariants: Variants = {
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 110, damping: 15 } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 110, damping: 15 },
   },
 };
 
@@ -78,15 +85,17 @@ export default function Projects() {
   };
 
   const filteredProjects = useMemo(() => {
-    return projects.filter((p) =>
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.tech_stack?.some(t => t.toLowerCase().includes(search.toLowerCase()))
+    return projects.filter(
+      (p) =>
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        p.tech_stack?.some((t) =>
+          t.toLowerCase().includes(search.toLowerCase()),
+        ),
     );
   }, [search, projects]);
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 transition-colors duration-500 selection:bg-purple-100 dark:selection:bg-purple-900/30">
-      
       {/* Background Layer */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -94,7 +103,7 @@ export default function Projects() {
         <div className="absolute bottom-[5%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 dark:bg-blue-500/10 hidden md:block blur-[80px] rounded-full" />
       </div>
 
-      <motion.main 
+      <motion.main
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -106,20 +115,27 @@ export default function Projects() {
             <motion.div variants={itemVariants} className="space-y-4">
               <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold">
                 <Sparkles size={16} />
-                <span className="text-[10px] uppercase tracking-[0.4em]">Selected Works</span>
+                <span className="text-[10px] uppercase tracking-[0.4em]">
+                  Selected Works
+                </span>
               </div>
               <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] uppercase">
-                Product <br /> 
-                <span className="text-zinc-300 dark:text-zinc-800 italic font-medium">Archive.</span>
+                Product <br />
+                <span className="text-zinc-300 dark:text-zinc-800 italic font-medium">
+                  Archive.
+                </span>
               </h1>
             </motion.div>
 
             {/* Search Bar */}
-            <motion.div variants={itemVariants} className="relative group w-full md:w-80">
+            <motion.div
+              variants={itemVariants}
+              className="relative group w-full md:w-80"
+            >
               <div className="absolute inset-0 bg-purple-500/20 rounded-2xl blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
               <div className="relative flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 shadow-sm group-focus-within:border-purple-500/50 transition-all">
                 <Search className="text-zinc-400 mr-3" size={18} />
-                <input 
+                <input
                   type="text"
                   placeholder="Filter by tech or title..."
                   value={search}
@@ -137,10 +153,12 @@ export default function Projects() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
             <Loader className="animate-spin text-purple-500" size={32} />
-            <p className="text-zinc-400 font-mono text-[10px] uppercase tracking-[0.3em]">Indexing Projects</p>
+            <p className="text-zinc-400 font-mono text-[10px] uppercase tracking-[0.3em]">
+              Indexing Projects
+            </p>
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 gap-6 md:gap-10"
           >
@@ -154,14 +172,15 @@ export default function Projects() {
                   className="group"
                 >
                   <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 md:p-8 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 rounded-[2.5rem] hover:bg-white dark:hover:bg-zinc-900/80 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/5">
-                    
                     {/* Project Image */}
                     <div className="relative w-full md:w-64 aspect-video md:aspect-square rounded-[1.8rem] overflow-hidden shrink-0 border border-zinc-100 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800">
                       {project.image ? (
                         <ProjectImage src={project.image} alt={project.title} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-zinc-400 dark:text-zinc-600 text-xs uppercase tracking-widest font-bold">No Image</span>
+                          <span className="text-zinc-400 dark:text-zinc-600 text-xs uppercase tracking-widest font-bold">
+                            No Image
+                          </span>
                         </div>
                       )}
                     </div>
@@ -170,20 +189,30 @@ export default function Projects() {
                     <div className="flex-grow space-y-5 w-full">
                       <div className="flex justify-between items-start">
                         <div className="space-y-2">
-                           <h2 className="text-xl md:text-2xl font-black tracking-tight uppercase">
+                          <h2 className="text-xl md:text-2xl font-black tracking-tight uppercase">
                             {project.title}
                           </h2>
                           <div className="h-0.5 w-8 bg-purple-500 rounded-full" />
                         </div>
-                        
+
                         <div className="flex gap-3">
                           {project.github_url && (
-                            <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                            <a
+                              href={project.github_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                            >
                               <Github size={18} />
                             </a>
                           )}
                           {project.live_url && (
-                            <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-all shadow-xl shadow-purple-500/20">
+                            <a
+                              href={project.live_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-all shadow-xl shadow-purple-500/20"
+                            >
                               <ArrowUpRight size={20} />
                             </a>
                           )}
@@ -196,8 +225,8 @@ export default function Projects() {
 
                       <div className="flex flex-wrap gap-2 pt-1">
                         {project.tech_stack?.map((tech) => (
-                          <span 
-                            key={tech} 
+                          <span
+                            key={tech}
                             className="text-[9px] font-black tracking-widest text-zinc-400 dark:text-zinc-500 px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 uppercase"
                           >
                             {tech}
