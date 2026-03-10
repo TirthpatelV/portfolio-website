@@ -106,43 +106,43 @@ export default function Certificates() {
                 whileHover={{ y: -8 }}
                 className="group"
               >
-                <div className="relative h-full flex flex-col p-8 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 rounded-[2.5rem] hover:bg-white dark:hover:bg-zinc-900 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/5">
+                <div className="relative h-full flex flex-col p-4 md:p-8 bg-white/40 dark:bg-zinc-900/30 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 rounded-xl md:rounded-[2.5rem] hover:bg-white dark:hover:bg-zinc-900 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/5">
                   
-                  <div className="flex justify-between items-start mb-8">
-                    <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 transition-all group-hover:rotate-12 group-hover:bg-emerald-600 group-hover:text-white">
-                      <Award size={24} />
+                  <div className="flex justify-between items-start mb-4 md:mb-8">
+                    <div className="p-2 md:p-4 rounded-xl md:rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 transition-all group-hover:rotate-12 group-hover:bg-emerald-600 group-hover:text-white">
+                      <Award size={18} className="md:w-6 md:h-6" />
                     </div>
-                    <span className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 rounded-full uppercase tracking-widest">
+                    <span className="text-[9px] md:text-[10px] font-black text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800/50 px-2 md:px-3 py-1 rounded-full uppercase tracking-widest">
                       {formatDate(cert.date_obtained)}
                     </span>
                   </div>
 
-                  <div className="mb-10 space-y-2">
-                    <h3 className="text-2xl font-black tracking-tight leading-tight group-hover:text-emerald-600 transition-colors">
+                  <div className="mb-6 md:mb-10 space-y-1 md:space-y-2">
+                    <h3 className="text-base md:text-2xl font-black tracking-tight leading-tight group-hover:text-emerald-600 transition-colors">
                       {cert.title}
                     </h3>
                     <div className="flex items-center gap-2">
                       <div className="h-[1px] w-4 bg-emerald-500" />
-                      <p className="text-emerald-600 dark:text-emerald-400 text-[11px] font-black uppercase tracking-widest">
+                      <p className="text-emerald-600 dark:text-emerald-400 text-[9px] md:text-[11px] font-black uppercase tracking-widest">
                         {cert.issuer}
                       </p>
                     </div>
                     {cert.description && (
-                      <p className="pt-2 text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed line-clamp-2">
+                      <p className="pt-1 md:pt-2 text-zinc-500 dark:text-zinc-400 text-xs md:text-sm leading-relaxed line-clamp-2">
                         {cert.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-800/50">
+                  <div className="mt-auto pt-4 md:pt-6 border-t border-zinc-100 dark:border-zinc-800/50">
                     <a
                       href={cert.certificate_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-between group/link"
                     >
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover/link:text-zinc-900 dark:group-hover/link:text-white transition-colors">Verify Credential</span>
-                      <ExternalLink size={18} className="text-zinc-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform group-hover/link:text-emerald-500" />
+                      <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover/link:text-zinc-900 dark:group-hover/link:text-white transition-colors">Verify Credential</span>
+                      <ExternalLink size={16} className="md:w-[18px] md:h-[18px] text-zinc-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform group-hover/link:text-emerald-500" />
                     </a>
                   </div>
                 </div>

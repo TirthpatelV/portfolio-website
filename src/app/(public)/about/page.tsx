@@ -147,7 +147,7 @@ export default function About() {
             <div className="relative max-w-[280px] md:max-w-none w-full">
               <div className="aspect-square rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 shadow-sm">
                 <div className="w-full h-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                  {about?.profile_photo && <img src={about.profile_photo} alt="Profile" className="w-full h-full object-cover grayscale md:grayscale-[100%] hover:grayscale-0 transition-all duration-700" />}
+                  {about?.profile_photo && <img src={about.profile_photo} alt="Profile" className="w-full h-full object-cover md:grayscale md:hover:grayscale-0 transition-all duration-700" />}
                 </div>
               </div>
             </div>
