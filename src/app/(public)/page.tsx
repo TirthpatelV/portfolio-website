@@ -6,7 +6,7 @@ import { ArrowRight, Loader, Sparkles, Globe, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { Profile } from "@/types";
+import { Profile, About } from "@/types";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -27,6 +27,7 @@ const itemVariants: Variants = {
 
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [about, setAbout] = useState<About | null>(null);
   const { scrollY } = useScroll();
 
   const y1 = useTransform(scrollY, [0, 500], [0, 40]);
@@ -41,16 +42,21 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/profile");
-        const data = await res.json();
-        setProfile(data);
+        const [profileRes, aboutRes] = await Promise.all([
+          fetch("/api/profile"),
+          fetch("/api/about"),
+        ]);
+        const profileData = await profileRes.json();
+        const aboutData = await aboutRes.json();
+        setProfile(profileData);
+        setAbout(aboutData);
       } catch (e) {
-        console.error("Profile fetch error:", e);
+        console.error("Data fetch error:", e);
       }
     };
-    fetchProfile();
+    fetchData();
   }, []);
 
   if (!profile) {
@@ -171,10 +177,10 @@ export default function Home() {
               <div className="relative h-full w-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-3 md:p-4 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
                 <div className="relative h-full w-full rounded-[1.4rem] md:rounded-[1.8rem] overflow-hidden">
                   <Image
-                    src={profile.hero_image || "/profile.JPG"}
+                    src={about?.profile_photo || "/profile.JPG"}
                     fill
                     alt={profile.name}
-                    priority={!profile.hero_image}
+                    priority={!about?.profile_photo}
                     sizes="(max-width: 768px) 260px, (max-width: 1024px) 320px, 320px"
                     className="object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-110"
                   />
