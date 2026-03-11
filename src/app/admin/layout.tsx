@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Square,
   Dot,
+  Settings,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,6 +34,7 @@ const adminLinks = [
   { href: "/admin/certificates", label: "Certificates", icon: Award },
   { href: "/admin/blog", label: "Blog Posts", icon: BookOpen },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -49,6 +51,14 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   const isLoginPage = pathname === "/admin/login";
+  const isRecoveryPage = pathname === "/admin/recovery";
+  const isResetConfirmPage = pathname === "/admin/reset-password-confirm";
+  const isForgotPasswordPinPage = pathname === "/admin/forgot-password-pin";
+  const isPublicPage =
+    isLoginPage ||
+    isRecoveryPage ||
+    isResetConfirmPage ||
+    isForgotPasswordPinPage;
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -62,7 +72,7 @@ export default function AdminLayout({
   }, []);
 
   useEffect(() => {
-    if (isLoginPage) {
+    if (isPublicPage) {
       setIsLoading(false);
       return;
     }
@@ -79,11 +89,11 @@ export default function AdminLayout({
       setIsLoading(false);
     };
     checkAuth();
-  }, [router, isLoginPage]);
+  }, [router, isPublicPage]);
 
   // Fetch unread message count
   useEffect(() => {
-    if (isLoginPage || !user) return;
+    if (isPublicPage || !user) return;
 
     const fetchUnreadCount = async () => {
       try {
@@ -103,7 +113,7 @@ export default function AdminLayout({
     // Poll for new messages every 30 seconds
     const interval = setInterval(fetchUnreadCount, 30000);
     return () => clearInterval(interval);
-  }, [isLoginPage, user]);
+  }, [isPublicPage, user]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -125,7 +135,7 @@ export default function AdminLayout({
     );
   }
 
-  if (isLoginPage) return children;
+  if (isPublicPage) return children;
   if (!user) return null;
 
   return (

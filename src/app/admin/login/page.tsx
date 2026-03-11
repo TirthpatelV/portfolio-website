@@ -10,9 +10,9 @@ import {
   EyeOff,
   ArrowRight,
   ShieldCheck,
-  Home,
   Lock,
-  Square,
+  Loader2,
+  ChevronLeft,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -46,43 +46,49 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-50 dark:bg-[#0f1115] flex items-center justify-center px-4 relative overflow-hidden font-sans">
-      {/* Soft Ambient Background Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full" />
+    <div className="min-h-screen w-full bg-[#f8fafc] dark:bg-[#090a0c] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden selection:bg-indigo-500/30">
+      {/* Dynamic Background - Hidden on very small heights to save GPU */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[70%] sm:w-[50%] h-[50%] bg-indigo-500/10 blur-[80px] sm:blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] sm:w-[50%] h-[50%] bg-blue-500/10 blur-[80px] sm:blur-[120px] rounded-full animate-pulse [animation-delay:2s]" />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-[400px] relative z-10"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full max-w-[440px] relative z-10"
       >
-        {/* Simple Brand Logo */}
-        <div className="flex justify-center mb-8">
-          <div className="w-12 h-12 bg-white dark:bg-[#16191f] border border-slate-200 dark:border-white/10 rounded-2xl flex items-center justify-center shadow-sm">
-            <Square
-              className="text-indigo-600 dark:text-indigo-400 fill-indigo-600/10"
-              size={24}
-            />
-          </div>
-        </div>
+        {/* Top Navigation - Responsive margins */}
+        <Link
+          href="/"
+          className="group mb-4 sm:mb-8 inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors ml-2"
+        >
+          <ChevronLeft
+            size={14}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          Return to Site
+        </Link>
 
-        {/* Login Card */}
-        <div className="bg-white dark:bg-[#16191f] rounded-[2rem] border border-slate-200 dark:border-white/5 p-8 md:p-10 shadow-xl shadow-indigo-500/5">
-          <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
-              Welcome Back
+        {/* Login Card - Responsive Padding & Borders */}
+        <div className="bg-white/80 dark:bg-[#111318]/80 backdrop-blur-xl rounded-[2rem] sm:rounded-[2.5rem] border border-slate-200 dark:border-white/10 p-6 sm:p-10 shadow-2xl shadow-indigo-500/10">
+          <div className="mb-8 sm:mb-10 text-center sm:text-left">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-600 mb-4 sm:mb-6 shadow-lg shadow-indigo-600/20">
+              <Lock className="text-white" size={22} />
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              Admin Portal
             </h1>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">
-              Core Admin Access
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Enter credentials to access the command center.
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
+            {/* Email Field */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 ml-1">
                 Email Address
               </label>
               <input
@@ -90,75 +96,74 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 py-3 px-4 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-300"
-                placeholder="admin@example.com"
+                className="w-full bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                placeholder="name@company.com"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">
+            {/* Password Field */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 Password
               </label>
-              <div className="relative">
+
+              <div className="relative group">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 py-3 px-4 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-300"
+                  className="w-full bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-indigo-500 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-500 transition-colors"
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-            </div>
 
-            <div className="pt-2">
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                disabled={isLoading}
-                className="w-full py-3.5 bg-indigo-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+              <Link
+                href="/admin/forgot-password-pin"
+                className="text-[9px] sm:text-[10px] font-bold text-indigo-500 hover:underline ml-1 inline-block"
               >
-                {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <span>Sign In</span>
-                    <ArrowRight size={18} />
-                  </>
-                )}
-              </motion.button>
+                FORGOT PASSWORD?
+              </Link>
             </div>
-          </form>
 
-          {/* Footer Navigation */}
-          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-white/5">
-            <Link
-              href="/"
-              className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400 hover:text-indigo-500 transition-colors uppercase tracking-widest"
+            {/* Login Button - Responsive sizing */}
+            <motion.button
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              disabled={isLoading}
+              className="relative w-full py-3.5 sm:py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl sm:rounded-2xl shadow-xl shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
             >
-              <Home size={14} />
-              <span>Back to Website</span>
-            </Link>
-          </div>
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin text-white/80" />
+              ) : (
+                <>
+                  <span>Authenticate</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </motion.button>
+          </form>
         </div>
 
-        {/* Security Footer */}
-        <div className="mt-8 flex items-center justify-center gap-4 opacity-50">
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck
-              size={14}
-              className="text-indigo-600 dark:text-indigo-400"
-            />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              Secure Access
+        {/* Security Badge - Responsive visibility */}
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-emerald-500" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              End-to-End Encrypted
             </span>
           </div>
+          <span className="hidden sm:inline text-slate-300">|</span>
+          {/* <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            v2.4.0-Stable
+          </span> */}
         </div>
       </motion.div>
     </div>
