@@ -138,7 +138,7 @@ export default function Certificates() {
                       </p>
                     </div>
                     {cert.description && (
-                      <p className="pt-1 md:pt-2 text-zinc-500 dark:text-zinc-400 text-xs md:text-sm leading-relaxed line-clamp-2">
+                      <p className="pt-1 md:pt-2 text-zinc-500 dark:text-zinc-400 text-xs md:text-sm leading-relaxed">
                         {cert.description}
                       </p>
                     )}

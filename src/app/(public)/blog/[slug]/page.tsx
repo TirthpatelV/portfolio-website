@@ -20,6 +20,7 @@ export default function BlogArticle() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const authorName = "Harmin Patel";
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -154,36 +155,55 @@ export default function BlogArticle() {
               “{post.excerpt}”
             </div>
           )}
-
           {/* Content Area */}
           <article
             className="prose prose-zinc dark:prose-invert prose-lg md:prose-xl max-w-none 
             prose-headings:tracking-tighter prose-headings:font-bold
-            prose-p:leading-relaxed prose-p:text-zinc-700 dark:prose-p:text-zinc-300
+            prose-p:leading-relaxed prose-p:text-zinc-700 dark:prose-p:text-zinc-300 prose-p:text-justify
             prose-strong:text-zinc-900 dark:prose-strong:text-white
             prose-img:rounded-3xl prose-img:shadow-2xl"
           >
             <div dangerouslySetInnerHTML={{ __html: post.content || "" }} />
           </article>
-
           {/* Footer Social / CTA */}
-          <footer className="mt-20 pt-10 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500" />
+          {/* Define this at the top of your component or import from a config file */}
+
+          <footer className="mt-20 pt-10 border-t border-zinc-100 dark:border-zinc-900">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+              <div className="group flex items-center gap-4 cursor-default">
+                {/* Abstract Icon */}
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-zinc-900 dark:bg-black flex items-center justify-center">
+                  <div
+                    className="absolute inset-0 opacity-20 transition-opacity group-hover:opacity-40"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
+                      backgroundSize: "6px 6px",
+                    }}
+                  />
+                  <div className="relative w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.8)] transition-transform duration-500 group-hover:scale-150" />
+                  <div className="absolute inset-0 border border-white/10 rounded-xl" />
+                </div>
+
                 <div>
-                  <p className="text-sm font-bold">Written by You</p>
-                  <p className="text-xs text-zinc-500 font-mono uppercase tracking-tight">
-                    Full-Stack Developer
+                  {/* Dynamic Title from Blog Post */}
+                  <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                    {post.title}
+                  </p>
+                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-0.5">
+                    Article by {authorName}
                   </p>
                 </div>
               </div>
 
               <Link
                 href="/blog"
-                className="flex items-center gap-2 px-8 py-3 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:scale-105 transition-transform"
+                className="group flex items-center gap-2 px-6 py-2.5 rounded-full bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 text-xs font-bold transition-all hover:bg-zinc-800 dark:hover:bg-zinc-200"
               >
-                <ArrowLeft size={18} />
+                <ArrowLeft
+                  size={14}
+                  className="transition-transform group-hover:-translate-x-1"
+                />
                 Back to Archive
               </Link>
             </div>

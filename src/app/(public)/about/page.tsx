@@ -302,7 +302,7 @@ export default function About() {
             <h2 className="text-2xl md:text-4xl font-bold uppercase text-zinc-900 dark:text-zinc-100">
               About Me
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 text-base md:text-2xl leading-relaxed font-normal md:font-light">
+            <p className="text-zinc-600 dark:text-zinc-400 text-base md:text-2xl leading-relaxed font-normal md:font-light text-justify">
               {about?.about_text}
             </p>
             <Link href="/contact">

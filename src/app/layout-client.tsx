@@ -4,14 +4,11 @@ import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Providers } from "@/components/Providers";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import LandingIntro from "@/components/LandingIntro";
 import { useEffect, useState } from "react";
 
-export function LayoutClient({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
 
@@ -32,6 +29,7 @@ export function LayoutClient({
 
   return (
     <Providers>
+      <ScrollToTop />
       {showIntro && (
         <LandingIntro
           onFinish={() => {
