@@ -258,9 +258,7 @@ export default function AdminBlog() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <ImageUploader
                   value={formData.image}
-                  onChange={(url) =>
-                    setFormData({ ...formData, image: url })
-                  }
+                  onChange={(url) => setFormData({ ...formData, image: url })}
                   label="Featured Image"
                   placeholder="https://..."
                   folder="blog-images"

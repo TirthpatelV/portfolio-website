@@ -1,12 +1,15 @@
 # Image Upload Feature Implementation
 
 ## Overview
+
 Added comprehensive image upload functionality to the admin dashboard with proper loading skeletons for both admin forms and public pages.
 
 ## Components Created
 
 ### 1. **ImageUploader Component** (`src/components/ImageUploader.tsx`)
+
 A reusable image input component with:
+
 - **Toggle between URL and Upload modes** - Admins can paste URLs or upload files
 - **Image preview** - Shows preview of selected image
 - **Loading skeleton** - Smooth gradient animation while image loads
@@ -15,6 +18,7 @@ A reusable image input component with:
 - **Clear button** - Easy way to remove/change image
 
 **Props:**
+
 - `value` - Current image URL
 - `onChange` - Callback when image URL changes
 - `label` - Field label
@@ -24,7 +28,9 @@ A reusable image input component with:
 - `labelClass` & `inputClass` - Styling props for consistency
 
 ### 2. **ImageSkeleton Component** (`src/components/ImageSkeleton.tsx`)
+
 A reusable skeleton loader for images with:
+
 - **Gradient animation** - Smooth loading effect
 - **Aspect ratio variants** - Supports square, video (16:9), and auto
 - **Dark mode support** - Adapts to theme
@@ -35,11 +41,13 @@ A reusable skeleton loader for images with:
 ### Admin Pages
 
 #### 1. **Admin Projects** (`src/app/admin/projects/page.tsx`)
+
 - Replaced "Cover Image URL" input with `ImageUploader`
 - Image folder: `project-images`
 - Admins can now upload or paste URL for project cover
 
 #### 2. **Admin Blog** (`src/app/admin/blog/page.tsx`)
+
 - Replaced "Featured Image URL" input with `ImageUploader`
 - Image folder: `blog-images`
 - Admins can upload or paste URL for article featured image
@@ -47,6 +55,7 @@ A reusable skeleton loader for images with:
 ### Public Pages
 
 #### 1. **Public Blog** (`src/app/(public)/blog/page.tsx`)
+
 - Added image loading state tracking
 - Featured post image shows gradient skeleton while loading
 - Grid post images show skeleton loaders
@@ -54,12 +63,14 @@ A reusable skeleton loader for images with:
 - No jerky appearance
 
 #### 2. **Public Projects** (`src/app/(public)/projects/page.tsx`)
+
 - Already had good image loading with ProjectImage component
 - Enhanced imports for consistency
 
 ## How It Works
 
 ### For Admin (Uploading Images)
+
 1. Click "URL" tab or "Upload" tab in image field
 2. **URL Mode**: Paste image URL from anywhere
 3. **Upload Mode**: Click to upload file from computer
@@ -71,6 +82,7 @@ A reusable skeleton loader for images with:
 6. Submit form as usual
 
 ### For Users (Viewing Images)
+
 1. When visiting blog or projects pages
 2. Images show gradient skeleton loader while downloading
 3. Once loaded, image fades in smoothly

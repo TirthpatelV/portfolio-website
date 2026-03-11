@@ -140,8 +140,12 @@ export default function Blog() {
                       <img
                         src={featuredPost.image}
                         alt={featuredPost.title}
-                        onLoadStart={() => handleImageStart(`featured-${featuredPost.id}`)}
-                        onLoad={() => handleImageLoad(`featured-${featuredPost.id}`)}
+                        onLoadStart={() =>
+                          handleImageStart(`featured-${featuredPost.id}`)
+                        }
+                        onLoad={() =>
+                          handleImageLoad(`featured-${featuredPost.id}`)
+                        }
                         className={`w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105 ${
                           loadingImages.has(`featured-${featuredPost.id}`)
                             ? "opacity-0"
@@ -205,7 +209,9 @@ export default function Blog() {
                           <img
                             src={post.image}
                             alt={post.title}
-                            onLoadStart={() => handleImageStart(`post-${post.id}`)}
+                            onLoadStart={() =>
+                              handleImageStart(`post-${post.id}`)
+                            }
                             onLoad={() => handleImageLoad(`post-${post.id}`)}
                             className={`w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105 ${
                               loadingImages.has(`post-${post.id}`)

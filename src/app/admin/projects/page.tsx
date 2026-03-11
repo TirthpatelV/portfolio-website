@@ -264,9 +264,7 @@ export default function AdminProjects() {
                 </div>
                 <ImageUploader
                   value={formData.image}
-                  onChange={(url) =>
-                    setFormData({ ...formData, image: url })
-                  }
+                  onChange={(url) => setFormData({ ...formData, image: url })}
                   label="Cover Image *"
                   placeholder="https://..."
                   folder="project-images"

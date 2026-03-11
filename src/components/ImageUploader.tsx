@@ -169,7 +169,13 @@ export function ImageUploader({
               size={18}
               className={isUploading ? "text-slate-400" : "text-indigo-600"}
             />
-            <span className={isUploading ? "text-slate-500" : "text-indigo-700 dark:text-indigo-400"}>
+            <span
+              className={
+                isUploading
+                  ? "text-slate-500"
+                  : "text-indigo-700 dark:text-indigo-400"
+              }
+            >
               {isUploading ? "Uploading..." : "Click to upload or drag image"}
             </span>
           </button>

@@ -20,6 +20,7 @@ export default function BlogArticle() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
   const authorName = "Harmin Patel";
 
   useEffect(() => {
@@ -111,13 +112,17 @@ export default function BlogArticle() {
       <main className="relative pb-24">
         {/* Hero Section */}
         <header className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden bg-zinc-900">
+          {!heroImageLoaded && post.image && (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800 animate-pulse" />
+          )}
           {post.image && (
             <motion.img
               initial={{ scale: 1.1, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.6 }}
+              animate={{ scale: 1, opacity: heroImageLoaded ? 0.6 : 0 }}
               transition={{ duration: 1.2 }}
               src={post.image}
               alt={post.title}
+              onLoad={() => setHeroImageLoaded(true)}
               className="w-full h-full object-cover"
             />
           )}
