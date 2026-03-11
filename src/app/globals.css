@@ -127,3 +127,30 @@
     @apply font-sans;
   }
 }
+
+
+/* Cinematic View Transition setup */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ensure the incoming theme is on top and crystal clear */
+::view-transition-new(root) {
+  z-index: 999;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* Optional: Adds a very subtle fade to the OLD page so the reveal looks cleaner */
+::view-transition-old(root) {
+  animation: 750ms cubic-bezier(0.3, 0, 0, 1) both fade-out;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0.8; } /* Doesn't fully disappear, keeps it grounded */
+}

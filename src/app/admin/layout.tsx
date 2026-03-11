@@ -90,9 +90,7 @@ export default function AdminLayout({
         const response = await fetch("/api/messages");
         if (response.ok) {
           const data = await response.json();
-          const unread = data.filter(
-            (m: any) => !m.read,
-          ).length;
+          const unread = data.filter((m: any) => !m.read).length;
           setUnreadCount(unread);
         }
       } catch (error) {
