@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Loader, Sparkles } from "lucide-react";
+import { ArrowRight, Loader, Sparkles, Download } from "lucide-react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Profile, About } from "@/types";
@@ -196,6 +196,36 @@ export default function Home() {
                       }}
                       whileHover="hover"
                       className="absolute inset-0 border-2 border-zinc-900 dark:border-white translate-x-[4px] translate-y-[4px] z-0 pointer-events-none"
+                    />
+                  </Link>
+
+                  {/* RESUME BUTTON (OUTLINE) */}
+                  <Link
+                    href="/about"
+                    className="w-full sm:w-auto relative group"
+                  >
+                    <motion.button
+                      whileHover={{ x: -2, y: -2 }}
+                      whileTap={{ x: 2, y: 2 }}
+                      className="relative w-full px-8 py-3.5 bg-transparent border-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white font-black text-[10px] uppercase tracking-[0.2em] z-10 transition-colors hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-900"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        GET RESUME <Download size={14} />
+                      </span>
+                    </motion.button>
+
+                    {/* THE REACTIVE SHADOW */}
+                    <motion.div
+                      variants={{
+                        hover: {
+                          x: 6,
+                          y: 6,
+                          backgroundColor: "rgba(24, 24, 27, 0.1)",
+                          transition: { type: "spring", stiffness: 300 },
+                        },
+                      }}
+                      whileHover="hover"
+                      className="absolute inset-0 border-2 border-zinc-900 dark:border-white translate-x-[4px] translate-y-[4px] z-0 opacity-20 group-hover:opacity-100 pointer-events-none"
                     />
                   </Link>
 
