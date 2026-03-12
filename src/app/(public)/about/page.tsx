@@ -7,7 +7,6 @@ import {
   useScroll,
   useSpring,
   useTransform,
-  AnimatePresence
 } from "framer-motion";
 import type { About } from "@/types";
 import {
@@ -52,8 +51,12 @@ function TimelineCard({
     [direction === "left" ? -60 : 60, 0]
   );
   
-  // REDUCED BLUR: Changed from 12 to 4 for a more natural feel
-  const blurValue = useTransform(smoothProgress, [0, 0.8], [4, 0]); 
+  /**
+   * FIX: REDUCED BLUR
+   * Changed from 12px to 2px. 
+   * This provides a subtle "focus" effect without the heavy blur that looks like lag on mobile.
+   */
+  const blurValue = useTransform(smoothProgress, [0, 0.8], [2, 0]);
   const filter = useTransform(blurValue, (v) => `blur(${v}px)`);
   
   const iconColor = useTransform(
@@ -164,12 +167,7 @@ function TimelineColumn({
         />
         <div className="space-y-0 pt-2">
           {items?.map((item, i) => (
-            <TimelineCard
-              key={i}
-              item={item}
-              direction={direction}
-              color={color}
-            />
+            <TimelineCard key={i} item={item} direction={direction} color={color} />
           ))}
         </div>
       </div>
@@ -177,38 +175,14 @@ function TimelineColumn({
   );
 }
 
-function TimelineSection({
-  about,
-  isMobile,
-}: {
-  about: About | null;
-  isMobile: boolean;
-}) {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 relative mb-12 md:mb-20">
-      <TimelineColumn
-        title="Education"
-        icon={<BookOpen size={isMobile ? 18 : 24} />}
-        items={Array.isArray(about?.education) ? about.education : []}
-        color="blue"
-        direction="left"
-      />
-      <TimelineColumn
-        title="Experience"
-        icon={<Briefcase size={isMobile ? 18 : 24} />}
-        items={Array.isArray(about?.experience) ? about.experience : []}
-        color="purple"
-        direction="right"
-      />
-    </div>
-  );
-}
-
+// --- MAIN PAGE COMPONENT ---
 export default function About() {
   const [about, setAbout] = useState<About | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [imgLoaded, setImgLoaded] = useState(false); // NEW: Image loading state
   const [isMobile, setIsMobile] = useState(false);
+  
+  // FIX: IMAGE LOADER STATE
+  const [imgIsLoading, setImgIsLoading] = useState(true);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -257,38 +231,38 @@ export default function About() {
       <header className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-48 pb-10 flex flex-col items-center md:items-start text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-2 py-1 rounded-md bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 mb-4">
           <Star size={12} className="text-blue-600" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
-            Profile
-          </span>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Profile</span>
         </div>
         <h1 className="text-4xl md:text-9xl font-bold md:font-black tracking-tight md:tracking-tighter leading-tight md:leading-[0.85] uppercase text-zinc-900 dark:text-zinc-100">
           Who <br className="md:hidden" />{" "}
-          <span className="text-zinc-400 dark:text-zinc-700 italic font-medium">
-            I Am.
-          </span>
+          <span className="text-zinc-400 dark:text-zinc-700 italic font-medium">I Am.</span>
         </h1>
       </header>
 
       <motion.main className="relative z-10 max-w-6xl mx-auto px-6 pb-24">
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start mb-16 md:mb-32">
-          {/* Profile Section */}
+          
+          {/* Profile Section with FIX: Smooth Loader */}
           <div className="lg:col-span-5 space-y-6 order-1 lg:order-2 flex flex-col items-center">
             <div className="relative max-w-[280px] md:max-w-none w-full">
               <div className="aspect-square rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 shadow-sm">
                 <div className="relative w-full h-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                  {/* SKELETON LOADER */}
-                  {!imgLoaded && (
-                    <div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
-                  )}
                   
+                  {/* SKELETON / LOADER */}
+                  {imgIsLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-200 dark:bg-zinc-900 animate-pulse">
+                      <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
+                    </div>
+                  )}
+
                   {about?.profile_photo && (
                     <motion.img
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: imgLoaded ? 1 : 0 }}
-                      transition={{ duration: 0.5 }}
-                      onLoad={() => setImgLoaded(true)}
                       src={about.profile_photo}
                       alt="Profile"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: imgIsLoading ? 0 : 1 }}
+                      transition={{ duration: 0.5 }}
+                      onLoad={() => setImgIsLoading(false)}
                       className="w-full h-full object-cover md:grayscale md:hover:grayscale-0 md:hover:scale-110 transition-all duration-700"
                     />
                   )}
@@ -333,7 +307,23 @@ export default function About() {
           </div>
         </section>
 
-        <TimelineSection about={about} isMobile={isMobile} />
+        {/* TIMELINE SECTION */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 relative mb-12 md:mb-20">
+          <TimelineColumn
+            title="Education"
+            icon={<BookOpen size={isMobile ? 18 : 24} />}
+            items={Array.isArray(about?.education) ? about.education : []}
+            color="blue"
+            direction="left"
+          />
+          <TimelineColumn
+            title="Experience"
+            icon={<Briefcase size={isMobile ? 18 : 24} />}
+            items={Array.isArray(about?.experience) ? about.experience : []}
+            color="purple"
+            direction="right"
+          />
+        </div>
       </motion.main>
     </motion.div>
   );
