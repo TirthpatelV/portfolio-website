@@ -27,7 +27,7 @@ export default function LandingIntro({ onFinish }: { onFinish: () => void }) {
     };
   }, [onFinish]);
 
-  const name = "HARMIN PATEL".split("");
+  const name = "TIRTH PATEL".split("");
   const isComplete = progress === 100;
   
   // Pulse speeds up until 100%, then stays calm/steady for the hold

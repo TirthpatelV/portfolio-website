@@ -293,7 +293,8 @@ export default function Home() {
                         alt={profile.name}
                         className="object-cover"
                         priority
-                        onLoadingComplete={() => setImageLoaded(true)}
+                        onLoad={() => setImageLoaded(true)}
+                        onError={() => setImageLoaded(true)}
                       />
                     </motion.div>
                   </div>
