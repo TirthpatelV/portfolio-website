@@ -54,6 +54,15 @@ export default function Certificates() {
     });
   };
 
+  const getDateDisplay = (cert: Certificate): string => {
+    // If both start and end dates are available, show the duration
+    if (cert.date_from && cert.date_to) {
+      return `${formatDate(cert.date_from)} – ${formatDate(cert.date_to)}`;
+    }
+    // Otherwise show the obtained date
+    return formatDate(cert.date_obtained);
+  };
+
   // Centralized Water-Style Loader
   if (isLoading)
     return (

@@ -277,7 +277,48 @@ export default function AdminCertificates() {
                   />
                 </div>
               </div>
-
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-1">
+                  <label className={labelClass}>Course Start Date (Optional)</label>
+                  <div className="relative">
+                    <Calendar
+                      size={14}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                    />
+                    <input
+                      type="date"
+                      value={formData.date_from}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          date_from: e.target.value,
+                        })
+                      }
+                      className={`${inputClass} pl-10`}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className={labelClass}>Course End Date (Optional)</label>
+                  <div className="relative">
+                    <Calendar
+                      size={14}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                    />
+                    <input
+                      type="date"
+                      value={formData.date_to}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          date_to: e.target.value,
+                        })
+                      }
+                      className={`${inputClass} pl-10`}
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="space-y-1">
                 <label className={labelClass}>Brief Description</label>
                 <textarea

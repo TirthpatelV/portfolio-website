@@ -70,6 +70,8 @@ export interface Certificate {
   title: string;
   issuer: string;
   date_obtained: string;
+  date_from?: string;
+  date_to?: string;
   certificate_url: string;
   description?: string;
   is_featured?: boolean;

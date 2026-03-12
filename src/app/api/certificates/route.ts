@@ -31,7 +31,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, issuer, date_obtained, certificate_url, description } = body;
+    const { title, issuer, date_obtained, date_from, date_to, certificate_url, description } = body;
 
     if (!title || !issuer || !date_obtained || !certificate_url) {
       return NextResponse.json(
@@ -50,6 +50,8 @@ export async function POST(request: NextRequest) {
           title,
           issuer,
           date_obtained,
+          date_from: date_from || null,
+          date_to: date_to || null,
           certificate_url,
           description: description || null,
         },
